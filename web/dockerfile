@@ -1,0 +1,7 @@
+FROM nginx:1.21-alpine
+
+WORKDIR /app
+
+COPY dist/ /usr/share/nginx/html/
+
+CMD ["nginx", "-g", "daemon off;"]

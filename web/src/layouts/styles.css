@@ -1,0 +1,50 @@
+.main {
+  /* margin-top: 50px; */
+}
+
+#components-layout-demo-fixed-sider .logo {
+  height: 32px;
+  margin: 16px;
+  background: rgba(255, 255, 255, 0.2);
+}
+.site-layout .site-layout-background {
+  background: #fff;
+}
+
+.sidebar { 
+}
+
+.sidebar h1 {
+  font-size: 4.8em;
+}
+
+.sidebar h2 {
+  font-size: 4.8em;
+}
+
+.sidebar p {
+  padding-right: 3px;
+}
+
+.content { 
+  margin-left: 60px;
+}
+
+.catalog { 
+  margin: 20px auto;
+  margin-right: 3px;
+  list-style: none;
+  font-size: 1.1em;
+}
+
+.catalog li {
+  margin: 2px auto;
+  font-weight: bold;
+}
+
+.catalog a { 
+  color: #d9534f;
+}
+.catalog a:hover {
+  color: #c9302c;
+}

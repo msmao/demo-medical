@@ -1,0 +1,9 @@
+
+### ping
+curl http://127.0.0.1:8080/ping
+
+### post
+curl -X POST -H "Content-Type: application/json" -d '{"Name":"FF2","Phone":"1112","Email":"ff2@ms.com"}' http://127.0.0.1:8080/api/register
+
+### list
+curl http://127.0.0.1:8080/api/list?page=1&pageSize=5
