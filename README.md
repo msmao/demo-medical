@@ -6,7 +6,7 @@
 1. 普通病人账号：user 密码：user
 2. 管理员账号：admin 密码：admin
 
-演示网址：[https://demo.msmao.com/medical](https://demo.msmao.com/medical)
+演示网址：[https://demo.msmao.com/medical/#/](https://demo.msmao.com/medical/#/)
 
 
 ## 需求
