@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: demo-argocd-test
+  name: demo-argocd-test
+  namespace: uat
+spec:
+  minReadySeconds: 60
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app: demo-argocd-test
+  template:
+    metadata:
+      labels:
+        app: demo-argocd-test
+    spec:
+      containers:
+        - name: demo-argocd-test
+          image: msmao/patient-backend
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8080
+              name: tcp-8080
+              protocol: TCP
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: demo-argocd-test
+  name: demo-argocd-test
+  namespace: uat
+spec:
+  ports:
+    - name: tcp-8080
+      port: 8080
+      protocol: TCP
+      targetPort: 8080
+  selector:
+    app: demo-argocd-test
+  sessionAffinity: None
+  type: NodePort

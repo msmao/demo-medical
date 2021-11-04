@@ -1,7 +1,7 @@
 import { defineConfig } from 'umi';
 
-const BASE_URL = process.env.NODE_ENV === 'production' ? 'https://medical.msmao.com/v1/' : `http://localhost:8000`;
-const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? 'https://medical.msmao.com/medical/' : `http://localhost:8000/`;
+const BASE_URL = process.env.NODE_ENV === 'production' ? 'http://internal-test.donefirst.com/v1/' : `http://localhost:8000`;
+const PUBLIC_PATH = process.env.NODE_ENV === 'production' ? 'http://internal-test.donefirst.com/medical/' : `http://localhost:8000/`;
 
 export default defineConfig({
   nodeModulesTransform: {
