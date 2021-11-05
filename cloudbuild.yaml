@@ -1,0 +1,29 @@
+steps:
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - build
+      - '-t'
+      - 'gcr.io/$PROJECT_ID/$_APP_NAME:$_K8S_NAMESPACE-demo-$COMMIT_SHA'
+      - .
+      - '-f'
+      - $_DOCKERFILE_NAME
+    id: BuildWorker
+  - name: gcr.io/cloud-builders/docker
+    args:
+      - push
+      - 'gcr.io/$PROJECT_ID/$_APP_NAME:$_K8S_NAMESPACE-demo-$COMMIT_SHA'
+    id: PushWorker
+options:
+  substitutionOption: ALLOW_LOOSE
+substitutions:
+  _APP_NAME: demo-cloudbuild-test
+  _GKE_LOCATION: us-west2-a
+  _GKE_CLUSTER: done-cluster
+  _DOCKERFILE_NAME: dockerfile
+  _WORKER_DOCKERFILE_NAME: DockerfileWorker
+  _K8S_NAMESPACE: uat
+  _K8S_REPLICAS: "1"
+tags:
+  - gcp-cloud-build-deploy
+  - $_K8S_APP_NAME
+
