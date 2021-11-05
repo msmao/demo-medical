@@ -20,7 +20,7 @@ spec:
     spec:
       containers:
         - name: demo-argocd-test
-          image: msmao/patient-backend
+          image: gcr.io/done-280702/demo-cloudbuild-test:uat-demo-6753e80f5197baec3c543cb5215b923f68efb8b9
           imagePullPolicy: Always
           ports:
             - containerPort: 8080
