@@ -1,28 +1,28 @@
 package main
 
 import (
-	"net/http"
-	"log"
 	"fmt"
-	"os"
+	"log"
 	"math/rand"
-  "time"
+	"net/http"
+	"os"
 	"path"
 	"strconv"
+	"time"
+
 	"github.com/gin-gonic/gin"
-	"gorm.io/gorm"
 	"gorm.io/driver/sqlite"
+	"gorm.io/gorm"
 )
 
-
 type Users struct {
-	ID uint `json:”id”`
-	Name string `json:"name"`
-	Birthday uint64 `json:"birthday"`
-	Phone uint64 `json:"phone"`
-	Email string `json:"email"`
-	Address string `json:"address"`
-	Photo string `json:"photo"`
+	ID              uint   `json:”id”`
+	Name            string `json:"name"`
+	Birthday        uint64 `json:"birthday"`
+	Phone           uint64 `json:"phone"`
+	Email           string `json:"email"`
+	Address         string `json:"address"`
+	Photo           string `json:"photo"`
 	AppointmentTime uint64 `json:"appointment_time"`
 }
 
@@ -32,9 +32,9 @@ var err error
 func main() {
 
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
-  if err != nil {
-    log.Fatalf("failed to connect database: %v", err)
-  }
+	if err != nil {
+		log.Fatalf("failed to connect database: %v", err)
+	}
 	db.AutoMigrate(&Users{})
 
 	r := gin.Default()
@@ -44,14 +44,14 @@ func main() {
 
 	r.GET("/", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"status": "ok",
-			"message": "api",
+			"status":  "ok",
+			"message": "/api",
 		})
 	})
 
 	r.GET("/ping", func(c *gin.Context) {
 		c.JSON(200, gin.H{
-			"status": "ok",
+			"status":  "ok",
 			"message": "pong",
 		})
 	})
@@ -64,7 +64,7 @@ func main() {
 		f, err := c.FormFile("file")
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
-				"status": "error",
+				"status":  "error",
 				"message": err,
 			})
 		}
@@ -82,7 +82,7 @@ func main() {
 		err = c.SaveUploadedFile(f, filePath)
 		if err != nil {
 			c.JSON(http.StatusOK, gin.H{
-				"status": "error",
+				"status":  "error",
 				"message": err,
 			})
 		}
@@ -107,14 +107,14 @@ func main() {
 
 		c.JSON(http.StatusOK, gin.H{
 			"status": "ok",
-			"data": user,
+			"data":   user,
 		})
 	})
 
 	// 获取所有病人信息
 	r.GET("/api/patients", func(c *gin.Context) {
 		var (
-			limit = 20
+			limit  = 20
 			offset = 0
 		)
 		current, _ := strconv.Atoi(c.DefaultQuery("current", "1"))
@@ -134,11 +134,11 @@ func main() {
 
 		c.JSON(http.StatusOK, gin.H{
 			"status": "ok",
-			"total": total,
-			"data": users,
+			"total":  total,
+			"data":   users,
 		})
 	})
 
 	// 监听并在 0.0.0.0:8080 上启动服务
-	r.Run(":8080") 
+	r.Run(":8080")
 }
