@@ -32,6 +32,7 @@ steps:
       set -x && \
       git config --global user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
       git config --global user.name cloudbuild && \
+      ls -la / && \
       ls -la && \
       # git clone https://github.com/msmao/demo-medical.git && \
       cd ops && echo $COMMIT_SHA > version.txt && \
