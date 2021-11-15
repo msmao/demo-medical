@@ -8,11 +8,88 @@ steps:
       - '-f'
       - $_DOCKERFILE_NAME
     id: BuildWorker
+
   - name: gcr.io/cloud-builders/docker
     args:
       - push
       - 'gcr.io/$PROJECT_ID/$_APP_NAME:$_K8S_NAMESPACE-demo-$COMMIT_SHA'
     id: PushWorker
+
+
+  # - name: 'gcr.io/$PROJECT_ID/git'
+  #   args: ['clone', 'https://github.com/msmao/demo-medical.git']
+  #   dir: 'ops'
+
+  # - name: 'gcr.io/cloud-builders/git'
+  #   args: ['push', 'https://github.com/msmao/demo-medical.git', 'master']
+
+  - name: 'gcr.io/cloud-builders/git'
+  id: Sync GitOps Repository
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    set -x && \
+    git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
+    git clone https://github.com/msmao/demo-medical.git && \
+    cd demo-medical/ops && echo $COMMIT_SHA > version.txt && \
+    git add . && \
+    git commit -m "Manifest from commit $COMMIT_SHA
+    $(git log --format=%B -n 1 $COMMIT_SHA)" && \
+    git push origin master
+
+  # - name: 'gcr.io/cloud-builders/gcloud'
+  #   id: Clone GitOps Repository
+  #   entrypoint: /bin/sh
+  #   args:
+  #   - '-c'
+  #   - |
+  #     git clone https://github.com/msmao/demo-medical.git && \
+  #     cd demo-medical && \
+  #     git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)')
+
+  # # This step generates the new manifest
+  # - name: 'gcr.io/cloud-builders/gcloud'
+  #   id: Generate manifest
+  #   entrypoint: /bin/sh
+  #   args:
+  #   - '-c'
+  #   - |
+  #     sed "s/GOOGLE_CLOUD_PROJECT/${PROJECT_ID}/g" kubernetes.yaml.tpl | \
+  #     sed "s/COMMIT_SHA/${SHORT_SHA}/g" > hello-cloudbuild-env/kubernetes.yaml
+  # # This step pushes the manifest back to hello-cloudbuild-env
+  # - name: 'gcr.io/cloud-builders/gcloud'
+  #   id: Push manifest
+  #   entrypoint: /bin/sh
+  #   args:
+  #   - '-c'
+  #   - |
+  #     set -x && \
+  #     cd hello-cloudbuild-env && \
+  #     git add kubernetes.yaml && \
+  #     git commit -m "Deploying image gcr.io/${PROJECT_ID}/hello-cloudbuild:${SHORT_SHA}
+  #     Built from commit ${COMMIT_SHA} of repository hello-cloudbuild-app
+  #     Author: $(git log --format='%an <%ae>' -n 1 HEAD)" && \
+  #     git push origin candidate
+
+  # - name: 'gcr.io/cloud-builders/git'
+  #   id: Copy to production branch
+  #   entrypoint: /bin/sh
+  #   args:
+  #   - '-c'
+  #   - |
+  #     set -x && \
+  #     # Configure Git to create commits with Cloud Build's service account
+  #     git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
+  #     # Switch to the production branch and copy the kubernetes.yaml file from the candidate branch
+  #     git checkout $COMMIT_SHA kubernetes.yaml && \
+  #     # Commit the kubernetes.yaml file with a descriptive commit message
+  #     git commit -m "Manifest from commit $COMMIT_SHA
+  #     $(git log --format=%B -n 1 $COMMIT_SHA)" && \
+  #     # Push the changes back to Cloud Source Repository
+  #     git push
+
+
 options:
   substitutionOption: ALLOW_LOOSE
 substitutions:
