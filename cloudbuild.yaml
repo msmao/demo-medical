@@ -24,14 +24,17 @@ steps:
   #   args: ['push', 'https://github.com/msmao/demo-medical.git', 'master']
 
   - name: 'gcr.io/cloud-builders/git'
+    args: ['config', '--global', '--list']
+
+  - name: 'gcr.io/cloud-builders/git'
     id: Sync GitOps Repository
     entrypoint: /bin/sh
     args:
     - '-c'
     - |
       set -x && \
-      # git config --global user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
-      # git config --global user.name cloudbuild && \
+      git config --global user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
+      git config --global user.name cloudbuild && \
       ls -la / && \
       ls -la && \
       # git clone https://github.com/msmao/demo-medical.git && \
@@ -40,6 +43,9 @@ steps:
       git commit -m "Manifest from commit $COMMIT_SHA
       $(git log --format=%B -n 1 $COMMIT_SHA)" && \
       git push -u origin master
+
+  - name: 'gcr.io/cloud-builders/git'
+    args: ['push', 'https://github.com/$PROJECT_ID/$REPO', 'master']
 
   # - name: 'gcr.io/cloud-builders/gcloud'
   #   id: Clone GitOps Repository
