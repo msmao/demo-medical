@@ -9,11 +9,11 @@ steps:
       - $_DOCKERFILE_NAME
     id: BuildWorker
 
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - push
-      - 'gcr.io/$PROJECT_ID/$_APP_NAME:$_K8S_NAMESPACE-demo-$COMMIT_SHA'
-    id: PushWorker
+  # - name: gcr.io/cloud-builders/docker
+  #   args:
+  #     - push
+  #     - 'gcr.io/$PROJECT_ID/$_APP_NAME:$_K8S_NAMESPACE-demo-$COMMIT_SHA'
+  #   id: PushWorker
 
 
   # - name: 'gcr.io/$PROJECT_ID/git'
@@ -39,7 +39,7 @@ steps:
       git add . && \
       git commit -m "Manifest from commit $COMMIT_SHA
       $(git log --format=%B -n 1 $COMMIT_SHA)" && \
-      git push --set-upstream origin master
+      git push -u origin master
 
   # - name: 'gcr.io/cloud-builders/gcloud'
   #   id: Clone GitOps Repository
