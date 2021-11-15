@@ -44,9 +44,6 @@ steps:
       $(git log --format=%B -n 1 $COMMIT_SHA)" && \
       git push -u origin master
 
-  - name: 'gcr.io/cloud-builders/git'
-    args: ['push', 'https://github.com/$PROJECT_ID/$REPO', 'master']
-
   # - name: 'gcr.io/cloud-builders/gcloud'
   #   id: Clone GitOps Repository
   #   entrypoint: /bin/sh
