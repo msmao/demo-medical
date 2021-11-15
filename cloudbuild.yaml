@@ -24,9 +24,6 @@ steps:
   #   args: ['push', 'https://github.com/msmao/demo-medical.git', 'master']
 
   - name: 'gcr.io/cloud-builders/git'
-    args: ['config', '--global', '--list']
-
-  - name: 'gcr.io/cloud-builders/git'
     id: Sync GitOps Repository
     entrypoint: /bin/sh
     args:
@@ -38,11 +35,12 @@ steps:
       ls -la / && \
       ls -la && \
       # git clone https://github.com/msmao/demo-medical.git && \
+      git checkout -b $COMMIT_SHA
       cd ops && echo $COMMIT_SHA > version.txt && \
       git add . && \
       git commit -m "Manifest from commit $COMMIT_SHA
       $(git log --format=%B -n 1 $COMMIT_SHA)" && \
-      git push -u origin master
+      git push -u origin $COMMIT_SHA
 
   # - name: 'gcr.io/cloud-builders/gcloud'
   #   id: Clone GitOps Repository
