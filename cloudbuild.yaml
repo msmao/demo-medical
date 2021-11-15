@@ -1,13 +1,13 @@
 steps:
-  - name: gcr.io/cloud-builders/docker
-    args:
-      - build
-      - '-t'
-      - 'gcr.io/$PROJECT_ID/$_APP_NAME:$_K8S_NAMESPACE-demo-$COMMIT_SHA'
-      - .
-      - '-f'
-      - $_DOCKERFILE_NAME
-    id: BuildWorker
+  # - name: gcr.io/cloud-builders/docker
+  #   args:
+  #     - build
+  #     - '-t'
+  #     - 'gcr.io/$PROJECT_ID/$_APP_NAME:$_K8S_NAMESPACE-demo-$COMMIT_SHA'
+  #     - .
+  #     - '-f'
+  #     - $_DOCKERFILE_NAME
+  #   id: BuildWorker
 
   # - name: gcr.io/cloud-builders/docker
   #   args:
@@ -33,6 +33,7 @@ steps:
       git config --global user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
       git config --global user.name cloudbuild && \
       ls -la / && \
+      ls -la /workspace/ && \
       ls -la && \
       # git clone https://github.com/msmao/demo-medical.git && \
       cd ops && echo $COMMIT_SHA > version.txt && \
